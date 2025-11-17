@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Seat Booking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f7f7f7; }
+    .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
+    .seat-container { display: grid; grid-template-columns: repeat(5, 60px); gap: 10px; margin-top: 20px; }
+    .seat {
+      width: 60px; height: 60px; display: flex;
+      justify-content: center; align-items: center;
+      border-radius: 8px; color: white; font-weight: bold; font-size: 18px;
+    }
+    .occupied { background: gray; cursor: not-allowed; }
+    .available { background: green; cursor: pointer; }
+    #booking-box { margin-top: 25px; display: none; }
+    input { width: 100%; padding: 10px; margin: 8px 0; border-radius: 6px; border: 1px solid #ccc; }
+    button { padding: 10px 20px; font-size: 16px; background: blue; border: none; color: white; border-radius: 6px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Seat Booking</h2>
+  <p>10 seats total — 7 already occupied</p>
+
+  <div class="seat-container" id="seats"></div>
+
+  <div id="booking-box">
+    <h3>Booking Seat <span id="seat-num"></span></h3>
+    <input id="name" placeholder="Your Name">
+    <input id="phone" placeholder="Phone Number">
+    <button onclick="confirmBooking()">Confirm Booking</button>
+  </div>
+</div>
+
+<script>
+  const totalSeats = 10;
+  const occupiedSeats = [1,2,3,4,5,6,7];
+  let selectedSeat = null;
+
+  const seatsDiv = document.getElementById("seats");
+
+  function loadSeats() {
+    for (let i = 1; i <= totalSeats; i++) {
+      const seat = document.createElement("div");
+      seat.classList.add("seat");
+      seat.textContent = i;
+
+      if (occupiedSeats.includes(i)) {
+        seat.classList.add("occupied");
+      } else {
+        seat.classList.add("available");
+        seat.onclick = () => selectSeat(i);
+      }
+
+      seatsDiv.appendChild(seat);
+    }
+  }
+
+  function selectSeat(num) {
+    selectedSeat = num;
+    document.getElementById("seat-num").textContent = num;
+    document.getElementById("booking-box").style.display = "block";
+  }
+
+  function confirmBooking() {
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    
+    if (!name || !phone) {
+      alert("Please enter your name and phone number");
+      return;
+    }
+
+    alert("Seat " + selectedSeat + " booked successfully!\nName: " + name + "\nPhone: " + phone);
+  }
+
+  loadSeats();
+</script>
+
+</body>
+</html>
